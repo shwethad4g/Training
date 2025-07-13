@@ -23,15 +23,24 @@ public class CustomerStockPortfolio {
             int choice = scanner.nextInt();
 
             switch (choice) {
-                case 1 -> viewStocks();
-                case 2 -> buyStocks();
-                case 3 -> sellStocks();
-                case 4 -> portfolio.ViewHoldingStatement(stockMarket);
-                case 5 -> {
+                case 1:
+                    viewStocks();
+                    break;
+                case 2:
+                    buyStocks();
+                    break;
+                case 3:
+                    sellStocks();
+                    break;
+                case 4:
+                    portfolio.ViewHoldingStatement(stockMarket);
+                    break;
+                case 5:
                     System.out.println("Thanks for using StockPortfolioApp!");
                     return;
-                }
-                default -> System.out.println("Invalid choice. Try again.");
+                default:
+                    System.out.println("Invalid choice. Try again.");
+                    break;
             }
         }
     }
@@ -46,7 +55,8 @@ public class CustomerStockPortfolio {
     static void viewStocks() {
         System.out.println("\nAvailable Stocks:");
         for (Stock stock : stockMarket.values()) {
-            System.out.printf("%s (%s): ₹%.2f\n", stock.name, stock.symbol, stock.price);
+            System.out.println(stock.name + " (" + stock.symbol + "): ₹" + String.format("%.2f", stock.price));
+
         }
     }
 
