@@ -18,6 +18,7 @@ public class LoanInterestCalculator {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
         System.out.println("Enter start date(DD/MM/YY)");
         startDate = s.nextLine();
+
         try {
             Date date = formatter.parse(startDate);
             System.out.println("Parsed Date: " + date);
@@ -34,17 +35,30 @@ public class LoanInterestCalculator {
             l.displayMessage();
             System.out.println("The Emi to be paid for every month is:");
             System.out.println(l.calculateEMI(LoanAmount, InterestRate, years));
-        } catch (ParseException e) {
+        }
+
+        catch (ParseException e) {
             System.out.println("Invalid date format. Please use DD/MM/YY.");
-        } catch (CustomLoanInputException e) {
+        }
+
+        catch (CustomLoanInputException e) {
             System.out.println("Input Error: " + e.getMessage());
         }
     }
 
     public static void validateLoanInputs(int years, double loanAmount, double interestRate)
             throws CustomLoanInputException {
-        if (years <= 0 || loanAmount <= 0 || interestRate <= 0) {
-            throw new CustomLoanInputException("Years, Loan Amount, and Interest Rate must all be greater than 0.");
+
+        if (years <= 0) {
+            throw new CustomLoanInputException("Loan tenure in years must be greater than 0.");
+        }
+
+        if (loanAmount <= 0) {
+            throw new CustomLoanInputException("Loan amount must be greater than 0.");
+        }
+
+        if (interestRate <= 0) {
+            throw new CustomLoanInputException("Interest rate must be greater than 0.");
         }
     }
 
@@ -55,12 +69,12 @@ public class LoanInterestCalculator {
         System.out.println(totalAmount = InterestAmount + LoanAmount);
     }
 
-    public double calculateEMI(double LoanAmount, double InterestRate, int Years) {
-        double monthlyInterestRate = InterestRate / (12 * 100);
-        int tenureInMonths = Years * 12;
-        double emi = LoanAmount * monthlyInterestRate *
-                Math.pow(1 + monthlyInterestRate, tenureInMonths) /
-                (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1);
+    public double calculateEMI(double loanAmount, double interestRate, int years) {
+        double simpleInterest = (loanAmount * interestRate * years) / 100;
+        double totalPayable = loanAmount + simpleInterest;
+        int tenureInMonths = years * 12;
+        double emi = totalPayable / tenureInMonths;
+
         return emi;
     }
 
