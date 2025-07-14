@@ -73,6 +73,7 @@ public class StudentOperations {
 
 
     public void marksList(int studentId, int Marks) {
+        
         for (Map.Entry<Integer, Integer> entry : studentMarks.entrySet()) {
             System.out.println("Student ID: " + entry.getKey() + ", Marks: " + entry.getValue());
         }
