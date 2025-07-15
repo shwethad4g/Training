@@ -16,55 +16,23 @@ public class StudentOperations {
     }
 
     public void displaySortedByName() {
-        List<Student> sortedList = new ArrayList<>(studentList);
-        Collections.sort(sortedList, (s1, s2) -> s1.getName().compareTo(s2.getName()));
-
-        for (Student s : sortedList) {
-            System.out.println(s);
-        }
+        studentList.stream()
+                .sorted(Comparator.comparing(Student::getName))
+                .forEach(System.out::println);
     }
 
     public void displayPassedStudents() {
-
-        for (Student s : studentList) {
-            int marks = studentMarks.get(s.getId());
-            if (marks >= 40) {
-                System.out.println(s + ", Marks: " + marks);
-            }
-        }
-    }
-
-    public void displayHighestAndLowestMarks() {
-
-        if (studentMarks.isEmpty()) {
-            System.out.println("No student marks available.");
-            return;
-        }
-
-        int maxMarks = Collections.max(studentMarks.values());
-        int minMarks = Collections.min(studentMarks.values());
-        System.out.println("Highest Marks: " + maxMarks);
-
-        for (Student s : studentList) {
-            if (studentMarks.get(s.getId()) == maxMarks) {
-                System.out.println("Topper: " + s + ", Marks: " + maxMarks);
-            }
-        }
-
-        System.out.println("Lowest Marks: " + minMarks);
-
-        for (Student s : studentList) {
-            if (studentMarks.get(s.getId()) == minMarks) {
-                System.out.println("Lowest Scorer: " + s + ", Marks: " + minMarks);
-            }
-        }
+        studentList.stream()
+                .filter(s -> studentMarks.get(s.getId()) >= 40)
+                .forEach(s -> System.out.println(s + ", Marks: " + studentMarks.get(s.getId())));
     }
 
     public void displayPassFailMap() {
         Map<Integer, String> result = studentMarks.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(),
-                        entry.getValue() >= 40 ? "Pass" : "Fail"))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue() >= 40 ? "Pass" : "Fail"
+                ));
 
         result.forEach((id, status) ->
                 System.out.println("Student ID: " + id + ", Result: " + status)
@@ -73,10 +41,34 @@ public class StudentOperations {
 
 
     public void marksList(int studentId, int Marks) {
-        for (Map.Entry<Integer, Integer> entry : studentMarks.entrySet()) {
-            System.out.println("Student ID: " + entry.getKey() + ", Marks: " + entry.getValue());
-        }
+        studentMarks.entrySet().stream()
+                .forEach(entry ->
+                        System.out.println("Student ID: " + entry.getKey() + ", Marks: " + entry.getValue())
+                );
     }
+
+    public void displayHighestAndLowestMarks() {
+
+        if (studentMarks.isEmpty()) {
+            System.out.println("No student marks available.");
+
+            return;
+        }
+
+        int maxMarks = Collections.max(studentMarks.values());
+        int minMarks = Collections.min(studentMarks.values());
+        System.out.println("Highest Marks: " + maxMarks);
+
+        studentList.stream()
+                .filter(s -> studentMarks.get(s.getId()) == maxMarks)
+                .forEach(s -> System.out.println("Topper: " + s + ", Marks: " + maxMarks));
+        System.out.println("Lowest Marks: " + minMarks);
+
+        studentList.stream()
+                .filter(s -> studentMarks.get(s.getId()) == minMarks)
+                .forEach(s -> System.out.println("Lowest Scorer: " + s + ", Marks: " + minMarks));
+    }
+
 
     public static void main(String[] args) {
         Student s1 = new Student(1, "zara");
@@ -89,7 +81,7 @@ public class StudentOperations {
         ops.saveStudent(s3, 60);
         System.out.println("Sorted Students by Name:");
         ops.displaySortedByName();
-        System.out.println("\nPassed Students(marks>=40):");
+        System.out.println("\nPassed Students (marks >= 40):");
         ops.displayPassedStudents();
         System.out.println("\nPass/Fail Map:");
         ops.displayPassFailMap();
