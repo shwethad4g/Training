@@ -130,7 +130,6 @@ public class EmployeeDAO {
         }
     }
 
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         EmployeeDAO dao = new EmployeeDAO();
@@ -142,7 +141,9 @@ public class EmployeeDAO {
             System.out.println("3. Update an employee");
             System.out.println("4. Delete an employee");
             System.out.println("5. Exit");
+
             int choice = scanner.nextInt();
+            scanner.nextLine();  // consume leftover newline
             System.out.println();
 
             switch (choice) {
@@ -164,7 +165,7 @@ public class EmployeeDAO {
                     System.out.print("Enter the employee name to update: ");
                     String updateName = scanner.nextLine();
                     dao.findEmployeeByName(updateName);
-                    System.out.print("\"");
+                    System.out.print("Enter the employee ID to update: ");
                     int updateId = Integer.parseInt(scanner.nextLine());
                     System.out.print("Enter the updated name: ");
                     String newName = scanner.nextLine();
@@ -179,7 +180,7 @@ public class EmployeeDAO {
                     System.out.print("Enter the employee name to delete: ");
                     String deleteName = scanner.nextLine();
                     dao.findEmployeeByName(deleteName);
-                    System.out.print("\"");
+                    System.out.print("Enter the employee ID to delete: ");
                     int deleteId = Integer.parseInt(scanner.nextLine());
                     dao.deleteEmployee(deleteId);
                     break;
@@ -195,4 +196,5 @@ public class EmployeeDAO {
             System.out.println();
         }
     }
+    
 }
