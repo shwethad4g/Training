@@ -1,3 +1,4 @@
+package Day9Task;
 
 import lombok.Getter;
 import lombok.Setter;
