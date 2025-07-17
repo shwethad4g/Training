@@ -1,0 +1,6 @@
+{
+  "name": "Shwetha",
+  "age": 24,
+  "branch": "CSE",
+  "skills": ["Java", "SQL"]
+}
