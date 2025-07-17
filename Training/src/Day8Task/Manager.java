@@ -23,7 +23,8 @@ public class Manager extends Employee {
             if ((peerReview == 5 && selfAppraisal == 5)) {
                 rate = 15;
                 updatedSalary = (hike = (getSalary() * rate / 100 + getSalary()));
-                System.out.println("Congratulations!! Here is your updated salary after appraisal for this year: " + updatedSalary);
+                System.out.println("Congratulations!! Here is your updated salary after appraisal for this year: "
+                        + updatedSalary);
             }
 
             else {
@@ -33,7 +34,6 @@ public class Manager extends Employee {
         }
     }
 
-    @Deprecated
     public static void main(String[] args) {
         Manager m = new Manager(1, "Riya", "Manager", 50000.0);
         m.getInformation();
