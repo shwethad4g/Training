@@ -9,7 +9,7 @@ public class ParseJsonFromFile {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            InputStream is = ParseJsonFromFile.class.getClassLoader().getResourceAsStream("Student.json");
+            InputStream is = ParseJsonFromFile.class.getClassLoader().getResourceAsStream(Constants.Json_File);
             Student student = mapper.readValue(is, Student.class);
 
             System.out.println("Name: " + student.getName());

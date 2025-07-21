@@ -32,7 +32,6 @@ public class PortfolioOperationsImpl implements PortfolioOperations {
             holdings.put(symbol, current - qty);
             System.out.println("Sold " + qty + " shares of " + symbol);
         }
-
         else {
             System.out.println("Not enough shares to sell.");
         }
@@ -61,7 +60,6 @@ public class PortfolioOperationsImpl implements PortfolioOperations {
     }
 
     public void generatePDFReport(Map<String, Stock> stockMarket) {
-
         try {
             Document document = new Document();
             String fileName = customer.getUsername() + "_portfolio.pdf";
@@ -95,7 +93,6 @@ public class PortfolioOperationsImpl implements PortfolioOperations {
             document.close();
             System.out.println("PDF Report generated: " + fileName);
         }
-
         catch (Exception e) {
             System.out.println("Failed to generate PDF: " + e.getMessage());
         }

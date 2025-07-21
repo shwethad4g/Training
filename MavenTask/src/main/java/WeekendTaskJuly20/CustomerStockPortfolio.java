@@ -1,19 +1,9 @@
 package WeekendTaskJuly20;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import static WeekendTaskJuly20.DBConstants.*;
 
 public class CustomerStockPortfolio {
-    static Map<String, Stock> stockMarket = new HashMap<>();
-    static PortfolioOperations portfolio = new PortfolioOperationsImpl();
-    static Scanner scanner = new Scanner(System.in);
-    static Customer currentCustomer = null;
-    static final String DB_URL = "jdbc:mysql://localhost:3306/customers";
-    static final String DB_USER = "root";
-    static final String DB_PASSWORD = "root";
-
     public static void initializeStocks() {
         stockMarket.put("INFY", new Stock("INFY", "Infosys", 1500.00));
         stockMarket.put("TCS", new Stock("TCS", "Tata Consultancy Services", 3500.00));
@@ -85,10 +75,10 @@ public class CustomerStockPortfolio {
                         System.out.println("Incorrect password. Attempts left: " + attempts);
                     }
                 }
+
                 System.out.println("Too many failed attempts. Exiting.");
                 System.exit(0);
             }
-
             else {
                 System.out.print("Enter a password to create your account: ");
                 String password = scanner.next();

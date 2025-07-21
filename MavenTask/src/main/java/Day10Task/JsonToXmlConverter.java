@@ -1,13 +1,36 @@
 package Day10Task;
-import org.json.JSONObject;
-import org.json.XML;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import java.io.InputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class JsonToXmlConverter {
     public static void main(String[] args) {
+        String outputXmlFile = PathConstants.outputXmlFile;
 
-        String jsonString = "{ \"employee\": { \"name\": \"John\", \"age\": 30, \"department\": \"Sales\" } }";
-        JSONObject jsonObject = new JSONObject(jsonString);
-        String xmlString = XML.toString(jsonObject);
-        System.out.println("XML Output:\n" + xmlString);
+        try {
+            InputStream inputStream = JsonToXmlConverter.class.getClassLoader()
+                    .getResourceAsStream(PathConstants.Json_File);
+
+            if (inputStream == null) {
+                throw new IOException("Resource file 'Employee.json' not found in classpath.");
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(inputStream);
+            XmlMapper xmlMapper = new XmlMapper();
+            String formattedXml = xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+            System.out.println("Formatted XML Output:\n" + formattedXml);
+            FileWriter writer = new FileWriter(outputXmlFile);
+            writer.write(formattedXml);
+            writer.close();
+            System.out.println("\nXML has been written to: " + outputXmlFile);
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

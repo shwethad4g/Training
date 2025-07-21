@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class PersonMain {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Name: ");
         String name = scanner.nextLine();
@@ -25,7 +24,6 @@ public class PersonMain {
             String xmlOutput = xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(person);
             System.out.println(xmlOutput);
         }
-
         catch (Exception e) {
             e.printStackTrace();
         }

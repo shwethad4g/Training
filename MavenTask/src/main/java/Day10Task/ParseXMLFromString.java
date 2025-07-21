@@ -6,17 +6,17 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-
+import java.io.File;
 
 public class ParseXMLFromString {
     public static void main(String[] args) {
-        String xmlData = "<person><name>John</name><age>25</age><gender>Male</gender>" +
-                "<qualification>B.Tech</qualification></person>";
+        String filePath = PathConstants.filePath;
 
         try {
+            File xmlFile = new File(filePath);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
+            Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
             System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
             NodeList list = doc.getDocumentElement().getChildNodes();
@@ -28,10 +28,9 @@ public class ParseXMLFromString {
                     System.out.println(node.getNodeName() + ": " + node.getTextContent());
                 }
             }
-        }
 
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }

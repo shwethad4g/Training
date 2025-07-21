@@ -10,7 +10,7 @@ public class ReadJsonFromTextFile {
 
         try {
             InputStream inputStream = ReadJsonFromTextFile.class.getClassLoader().
-                    getResourceAsStream("student.txt");
+                    getResourceAsStream(Constants.Text_File);
 
             if (inputStream == null) {
                 System.out.println("File not found in resources folder.");
