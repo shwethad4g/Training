@@ -22,7 +22,6 @@ public class PersonMain {
 
         try {
             XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.setDefaultUseWrapper(false);
             String xmlOutput = xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(person);
             System.out.println(xmlOutput);
         }
