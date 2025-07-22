@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Stock {
+public class StockDto {
     private String symbol;
     private String name;
     private double price;
