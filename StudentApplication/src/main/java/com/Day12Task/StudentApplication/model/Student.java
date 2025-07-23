@@ -1,4 +1,4 @@
-package com.Day12Task.StudentApplication.dto;
+package com.Day12Task.StudentApplication.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "student")
-public class StudentDto {
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
@@ -21,5 +21,5 @@ public class StudentDto {
     private LocalDate dob;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<MarkDto> marks;
+    private List<Mark> marks;
 }
