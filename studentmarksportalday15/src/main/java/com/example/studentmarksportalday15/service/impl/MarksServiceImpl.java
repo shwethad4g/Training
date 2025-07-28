@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MarksService {
+public class MarksServiceImpl implements MarksInterface {
 
     private final MarksRepository marksRepo;
     private final StudentRepository studentRepo;
@@ -27,6 +27,7 @@ public class MarksService {
         Student student = studentRepo.findById(dto.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + dto.getStudentId()));
         marks.setStudent(student);
+
         return marksMapper.toDto(marksRepo.save(marks));
     }
 
@@ -35,6 +36,7 @@ public class MarksService {
         Marks marks = marksRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Marks not found with given composite key"));
         marks.setMarksScored(dto.getMarksScored());
+
         return marksMapper.toDto(marksRepo.save(marks));
     }
 
