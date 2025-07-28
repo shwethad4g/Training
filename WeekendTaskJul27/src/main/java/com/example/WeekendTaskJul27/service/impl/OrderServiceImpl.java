@@ -28,9 +28,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByCustomerCustomerId(customerId);
     }
 
-
     @Transactional
-    public void checkout(int customerId) {
+    public String checkout(int customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
@@ -41,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         double totalAmount = 0.0;
+
         for (CartItem item : cartItems) {
             totalAmount += item.getProduct().getPrice() * item.getQuantity();
         }
@@ -62,23 +62,31 @@ public class OrderServiceImpl implements OrderService {
         }
 
         cartItemRepository.deleteAll(cartItems);
+
+        return " Checkout complete!\nOrder ID: " + order.getOrderId() +
+                "\nTotal Amount: ₹" + totalAmount +
+                "\nOrder Status: " + order.getStatus();
     }
 
 
-    @Transactional
-    public void printOrdersForCustomer(int customerId) {
-        List<Order> orders = orderRepository.findByCustomerCustomerId(customerId);
-        for (Order order : orders) {
-            System.out.println("Order ID: " + order.getOrderId() +
-                    ", Date: " + order.getOrderDate() +
-                    ", Customer: " + order.getCustomer().getName());
 
-            for (OrderItem item : order.getOrderItems()) {
-                System.out.println("   " + item.getProduct().getName() +
-                        " x" + item.getQuantity() +
-                        " - ₹" + item.getProduct().getPrice());
-            }
+    @Transactional
+    public String printOrdersForCustomer(int customerId) {
+        List<Order> orders = orderRepository.findByCustomerCustomerId(customerId);
+
+        if (orders.isEmpty()) {
+            return "No orders found for Customer ID: " + customerId;
         }
+
+        StringBuilder sb = new StringBuilder("Orders for Customer ID: " + customerId + ":\n");
+        for (Order order : orders) {
+            sb.append("Order ID: ").append(order.getOrderId())
+                    .append(", Total: ₹").append(order.getTotalAmount())
+                    .append(", Items: ").append(order.getItems().size())
+                    .append(", Status: ").append(order.getStatus()).append("\n");
+        }
+
+        return sb.toString();
     }
 
 }

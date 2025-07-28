@@ -8,8 +8,6 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class WeekendTaskJul27Application {
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(WeekendTaskJul27Application.class, args);
-        Ecommerce ecommerce = context.getBean(Ecommerce.class);
-        ecommerce.startShopping();
+        SpringApplication.run(WeekendTaskJul27Application.class, args);
     }
 }

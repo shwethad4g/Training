@@ -13,7 +13,9 @@ import com.example.WeekendTaskJul27.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -27,36 +29,66 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void addToCart(int customerId, long productId, int quantity) {
+    public String viewCart(int customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+        Cart cart = cartRepository.findByCustomer(customer)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        CartItem cartItem = new CartItem();
-        cartItem.setCustomer(customer);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-
-        cartItemRepository.save(cartItem);
-    }
-
-    public void viewCart(int customerId) {
-        List<CartItem> cartItems = cartItemRepository.findByCustomer_CustomerId(customerId);
+        List<CartItem> cartItems = cartItemRepository.findByCart_CartId(cart.getCartId());
 
         if (cartItems.isEmpty()) {
-            System.out.println("Your cart is empty.");
-            return;
+            return " Your cart is empty.";
         }
 
-        System.out.println("\n--- Cart ---");
+        StringBuilder sb = new StringBuilder(" Cart Items:\n");
+        double total = 0;
+
         for (CartItem item : cartItems) {
-            Product product = item.getProduct();
-            System.out.println(product.getName() + " x" + item.getQuantity() +
-                    " = ₹" + (product.getPrice() * item.getQuantity()));
+            double itemTotal = item.getProduct().getPrice() * item.getQuantity();
+            total += itemTotal;
+
+            sb.append("Product: ").append(item.getProduct().getName())
+                    .append(" | Qty: ").append(item.getQuantity())
+                    .append(" | Price: ₹").append(item.getProduct().getPrice())
+                    .append(" | Subtotal: ₹").append(itemTotal)
+                    .append("\n");
         }
+        sb.append("Total: ₹").append(total);
+        return sb.toString();
     }
 
+    @Override
+    public void addToCart(int customerId, int productId, int quantity) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
+        Product product = productRepository.findById((long) productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Cart cart = cartRepository.findByCustomer(customer)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setCustomer(customer);
+                    return cartRepository.save(newCart);
+                });
+
+
+        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(cart, product);
+
+        if (existingItemOpt.isPresent()) {
+            CartItem existingItem = existingItemOpt.get();
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+            cartItemRepository.save(existingItem);
+        } else {
+            CartItem newItem = new CartItem();
+            newItem.setCart(cart);
+            newItem.setCustomer(customer);
+            newItem.setProduct(product);
+            newItem.setQuantity(quantity);
+            cartItemRepository.save(newItem);
+        }
+
+    }
 }

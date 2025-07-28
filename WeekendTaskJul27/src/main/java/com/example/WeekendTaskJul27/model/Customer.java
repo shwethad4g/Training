@@ -11,12 +11,17 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="customer_id")
     private int customerId;
 
+    @Column(name="name")
     private String name;
-    private String email;
-    private String password;
 
+    @Column(name="email")
+    private String email;
+
+    @Column(name="password")
+    private String password;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private Cart cart;

@@ -2,6 +2,7 @@ package com.example.WeekendTaskJul27.service;
 
 
 public interface CartService {
-    void addToCart(int customerId, long productId, int quantity);
-    void viewCart(int customerId);
+
+    String viewCart(int customerId);
+    void addToCart(int customerId, int productId, int quantity);
 }
