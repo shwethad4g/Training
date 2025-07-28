@@ -1,0 +1,7 @@
+<ObjectNode>
+  <employee>
+    <name>John</name>
+    <age>30</age>
+    <department>Sales</department>
+  </employee>
+</ObjectNode>

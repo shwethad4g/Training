@@ -1,9 +1,10 @@
-package com.example.StudentMarksPortal.service;
+package com.example.StudentMarksPortal.service.impls;
 
 import com.example.StudentMarksPortal.dao.StudentRepository;
 import com.example.StudentMarksPortal.dto.StudentDto;
 import com.example.StudentMarksPortal.model.Student;
 
+import com.example.StudentMarksPortal.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

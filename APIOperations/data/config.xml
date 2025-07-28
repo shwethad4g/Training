@@ -1,4 +1,6 @@
 <student>
     <name>Shwetha</name>
     <age>24</age>
+    <gender>female</gender>
+    <qualification>B.E</qualification>
 </student>
