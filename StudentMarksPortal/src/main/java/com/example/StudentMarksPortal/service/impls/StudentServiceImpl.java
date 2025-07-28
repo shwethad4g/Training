@@ -1,6 +1,6 @@
 package com.example.StudentMarksPortal.service.impls;
 
-import com.example.StudentMarksPortal.dao.StudentRepository;
+import com.example.StudentMarksPortal.repository.StudentRepository;
 import com.example.StudentMarksPortal.dto.StudentDto;
 import com.example.StudentMarksPortal.model.Student;
 

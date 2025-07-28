@@ -15,9 +15,12 @@ import java.util.List;
 public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="exam_id")
     private int examId;
-
+    @Column(name="exam_name")
     private String examName;
+
+    @Column(name="exam_date")
     private LocalDate examDate;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)

@@ -17,9 +17,13 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private int studentId;
-
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "dob")
     private LocalDate dob;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)

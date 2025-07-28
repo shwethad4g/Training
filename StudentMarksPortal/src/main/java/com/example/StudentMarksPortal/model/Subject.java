@@ -13,8 +13,10 @@ import java.util.List;
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="subject_id")
     private int subjectId;
 
+    @Column(name="subject_name")
     private String subjectName;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)

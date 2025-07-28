@@ -1,4 +1,4 @@
-package com.example.StudentMarksPortal.dao;
+package com.example.StudentMarksPortal.repository;
 
 import com.example.StudentMarksPortal.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;

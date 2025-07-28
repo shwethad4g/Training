@@ -15,6 +15,7 @@ public class Mark {
     @EmbeddedId
     private MarkId id;
 
+    @Column(name="marks_obtained")
     private int marksScored;
 
     @ManyToOne
