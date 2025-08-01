@@ -1,10 +1,11 @@
-package com.example.student_mark_portal_day19.service;
+package com.example.student_mark_portal_day19.service.impl;
 
 
 import com.example.student_mark_portal_day19.dao.StudentDAO;
 import com.example.student_mark_portal_day19.dto.StudentDTO;
 import com.example.student_mark_portal_day19.mapper.StudentMapper;
 import com.example.student_mark_portal_day19.model.Student;
+import com.example.student_mark_portal_day19.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

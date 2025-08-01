@@ -1,4 +1,4 @@
-package com.example.student_mark_portal_day19.service;
+package com.example.student_mark_portal_day19.service.impl;
 
 
 import com.example.student_mark_portal_day19.dao.MarksDAO;
@@ -9,6 +9,7 @@ import com.example.student_mark_portal_day19.repository.ExamRepository;
 import com.example.student_mark_portal_day19.repository.MarksRepository;
 import com.example.student_mark_portal_day19.repository.StudentRepository;
 import com.example.student_mark_portal_day19.repository.SubjectRepository;
+import com.example.student_mark_portal_day19.service.MarksService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
