@@ -1,4 +1,4 @@
-package com.example.student_mark_portal_day20.dao.impl;
+package com.example.student_mark_portal_day20.dao;
 
 import com.example.student_mark_portal_day20.dao.ExamDAO;
 import com.example.student_mark_portal_day20.model.Exam;

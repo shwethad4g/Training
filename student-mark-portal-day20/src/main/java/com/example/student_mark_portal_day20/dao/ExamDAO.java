@@ -1,7 +1,7 @@
-package com.example.student_mark_portal_day20.dao.impl;
+package com.example.student_mark_portal_day20.dao;
 
 
-import com.example.student_mark_portal_day20.dao.ExamDAO;
+
 import com.example.student_mark_portal_day20.model.Exam;
 import com.example.student_mark_portal_day20.repository.ExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ExamDAOImpl implements ExamDAO {
+public class ExamDAO {
     @Autowired
     ExamRepository examRepo;
 

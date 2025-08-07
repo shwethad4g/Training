@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class SubjectDAOImpl implements SubjectDAO {
+public class SubjectDAO {
     @Autowired
     SubjectRepository subjectRepo;
 
