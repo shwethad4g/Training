@@ -2,16 +2,20 @@ package com.example.student_portal_day17.dao;
 
 
 import com.example.student_portal_day17.model.Exam;
+import com.example.student_portal_day17.repository.ExamRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ExamDAO {
-    Exam save(Exam exam);
+@Repository
+public class ExamDAO{
+    @Autowired
+    ExamRepository examRepo;
 
-    List<Exam> findAll();
-
-    Optional<Exam> findById(int id);
-
-    void deleteById(int id);
+    public Exam save(Exam exam) { return examRepo.save(exam); }
+    public List<Exam> findAll() { return examRepo.findAll(); }
+    public Optional<Exam> findById(int id) { return examRepo.findById(id); }
+    public void deleteById(int id) { examRepo.deleteById(id); }
 }

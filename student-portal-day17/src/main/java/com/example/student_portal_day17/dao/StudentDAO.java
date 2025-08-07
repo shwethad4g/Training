@@ -1,20 +1,63 @@
 package com.example.student_portal_day17.dao;
 
+
 import com.example.student_portal_day17.model.Student;
+import com.example.student_portal_day17.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentDAO {
-    Student save(Student student);
+@Repository
+public class StudentDAO {
 
-    List<Student> findAll();
+    @Autowired
+    private StudentRepository studentRepo;
 
-    Optional<Student> findById(int id);
 
-    void deleteById(int id);
+    public Student save(Student student) {
+        return studentRepo.save(student);
+    }
 
-    Student update(Student student);
 
-    Student updateStudent(int id, Student studentUpdates);
+    public List<Student> findAll() {
+        return studentRepo.findAll();
+    }
+
+
+    public Optional<Student> findById(int id) {
+        return studentRepo.findById(id);
+    }
+
+    public void deleteById(int id) {
+        studentRepo.deleteById(id);
+    }
+
+    public Student update(Student student) {
+
+        if (!studentRepo.existsById(student.getStudentId())) {
+            throw new RuntimeException("Student not found with id: " + student.getStudentId());
+        }
+        return studentRepo.save(student);
+    }
+
+
+
+    public Student updateStudent(int id, Student studentUpdates) {
+        return studentRepo.findById(id)
+                .map(existingStudent -> {
+                    if (studentUpdates.getName() != null) {
+                        existingStudent.setName(studentUpdates.getName());
+                    }
+                    if (studentUpdates.getEmail() != null) {
+                        existingStudent.setEmail(studentUpdates.getEmail());
+                    }
+                    if (studentUpdates.getDob() != null) {
+                        existingStudent.setDob(studentUpdates.getDob());
+                    }
+                    return studentRepo.save(existingStudent);
+                })
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    }
 }
