@@ -2,11 +2,13 @@ package com.example.student_mark_portal_day18.controller;
 
 
 import com.example.student_mark_portal_day18.dto.ErrorResponse;
+import com.example.student_mark_portal_day18.exception.BadRequestException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+
 import java.sql.SQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
@@ -21,8 +23,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleSQLConstraintViolation(SQLIntegrityConstraintViolationException
-                                                                                  ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleSQLConstraintViolation
+            (SQLIntegrityConstraintViolationException ex, HttpServletRequest request) {
 
         return buildErrorResponse(request, "DUPLICATE_ENTRY", "Duplicate key constraint violation",
                 HttpStatus.CONFLICT);
@@ -42,11 +44,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpServletRequest request,
-                                                             String code, String message, HttpStatus status) {
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException ex, HttpServletRequest request) {
+        return buildErrorResponse(request, "BAD_REQUEST", ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse
+            (HttpServletRequest request, String code, String message, HttpStatus status) {
         String requestId = (String) request.getAttribute("X-Request-ID");
         ErrorResponse error = new ErrorResponse(requestId, code, message);
 
         return new ResponseEntity<>(error, status);
     }
-}

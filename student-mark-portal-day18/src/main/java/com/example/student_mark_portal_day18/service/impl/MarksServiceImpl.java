@@ -3,6 +3,7 @@ package com.example.student_mark_portal_day18.service.impl;
 
 import com.example.student_mark_portal_day18.dao.MarksDAO;
 import com.example.student_mark_portal_day18.dto.MarksDTO;
+import com.example.student_mark_portal_day18.exception.BadRequestException;
 import com.example.student_mark_portal_day18.exception.ResourceNotFoundException;
 import com.example.student_mark_portal_day18.mapper.MarksMapper;
 import com.example.student_mark_portal_day18.model.Marks;
@@ -21,8 +22,13 @@ public class MarksServiceImpl implements MarksService {
     @Autowired
     private MarksMapper marksMapper;
 
+
     @Override
     public MarksDTO createMarks(MarksDTO marksDTO) {
+        if (marksDTO.getScore() < 0 || marksDTO.getScore() > 100) {
+            throw new BadRequestException("Marks must be between 0 and 100");
+        }
+
         Marks marks = marksMapper.toEntity(marksDTO);
         Marks savedMarks = marksDAO.save(marks);
 

@@ -1,7 +1,6 @@
 package com.example.student_mark_portal_day18.controller;
 
 import com.example.student_mark_portal_day18.dto.StudentDTO;
-import com.example.student_mark_portal_day18.model.Student;
 import com.example.student_mark_portal_day18.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
