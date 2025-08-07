@@ -1,23 +1,71 @@
-package com.example.student_mark_portal_day20.dao;
+package com.example.student_mark_portal_day20.dao.impl;
 
 
+import com.example.student_mark_portal_day20.dao.StudentDAO;
 import com.example.student_mark_portal_day20.model.Student;
+import com.example.student_mark_portal_day20.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentDAO {
-    Student save(Student student);
+@Repository
+public class StudentDAOImpl implements StudentDAO {
 
-    List<Student> findAll();
+    @Autowired
+    private StudentRepository studentRepo;
 
-    Optional<Student> findById(int id);
+    @Override
+    public Student save(Student student) {
+        return studentRepo.save(student);
+    }
 
-    void deleteById(int id);
+    @Override
+    public List<Student> findAll() {
+        return studentRepo.findAll();
+    }
 
-    Student update(Student student);
+    @Override
+    public Optional<Student> findById(int id) {
+        return studentRepo.findById(id);
+    }
 
-    Student updateStudent(int id, Student studentUpdates);
+    @Override
+    public void deleteById(int id) {
+        studentRepo.deleteById(id);
+    }
 
-    List<Student> findByNameContaining(String namePattern);
+    @Override
+    public Student update(Student student) {
+
+        if (!studentRepo.existsById(student.getStudentId())) {
+            throw new RuntimeException("Student not found with id: " + student.getStudentId());
+        }
+        return studentRepo.save(student);
+    }
+
+
+    @Override
+    public Student updateStudent(int id, Student studentUpdates) {
+        return studentRepo.findById(id)
+                .map(existingStudent -> {
+                    if (studentUpdates.getName() != null) {
+                        existingStudent.setName(studentUpdates.getName());
+                    }
+                    if (studentUpdates.getEmail() != null) {
+                        existingStudent.setEmail(studentUpdates.getEmail());
+                    }
+                    if (studentUpdates.getDob() != null) {
+                        existingStudent.setDob(studentUpdates.getDob());
+                    }
+                    return studentRepo.save(existingStudent);
+                })
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    }
+
+    @Override
+    public List<Student> findByNameContaining(String namePattern) {
+        return studentRepo.findByNameContaining(namePattern);
+    }
 }

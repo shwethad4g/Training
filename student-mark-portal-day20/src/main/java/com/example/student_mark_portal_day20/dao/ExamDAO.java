@@ -1,16 +1,22 @@
-package com.example.student_mark_portal_day20.dao;
+package com.example.student_mark_portal_day20.dao.impl;
 
+
+import com.example.student_mark_portal_day20.dao.ExamDAO;
 import com.example.student_mark_portal_day20.model.Exam;
+import com.example.student_mark_portal_day20.repository.ExamRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ExamDAO {
-    Exam save(Exam exam);
+@Repository
+public class ExamDAOImpl implements ExamDAO {
+    @Autowired
+    ExamRepository examRepo;
 
-    List<Exam> findAll();
-
-    Optional<Exam> findById(int id);
-
-    void deleteById(int id);
+    public Exam save(Exam exam) { return examRepo.save(exam); }
+    public List<Exam> findAll() { return examRepo.findAll(); }
+    public Optional<Exam> findById(int id) { return examRepo.findById(id); }
+    public void deleteById(int id) { examRepo.deleteById(id); }
 }

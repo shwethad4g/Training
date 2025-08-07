@@ -1,5 +1,6 @@
 package com.example.student_mark_portal_day20.dao.impl;
 
+import com.example.student_mark_portal_day20.dao.MarksDAO;
 import com.example.student_mark_portal_day20.model.Marks;
 import com.example.student_mark_portal_day20.model.Student;
 import com.example.student_mark_portal_day20.repository.MarksRepository;
@@ -16,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MarksDAOImplTest {
+class MarksDAOTest {
 
     @Mock
     private MarksRepository marksRepo;
 
     @InjectMocks
-    private MarksDAOImpl marksDAO;
+    private MarksDAO marksDAO;
 
     private Marks sampleMarks;
 

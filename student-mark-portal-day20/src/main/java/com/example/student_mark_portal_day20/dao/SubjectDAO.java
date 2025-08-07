@@ -1,19 +1,20 @@
 package com.example.student_mark_portal_day20.dao;
 
-
-
-
 import com.example.student_mark_portal_day20.model.Subject;
+import com.example.student_mark_portal_day20.repository.SubjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface SubjectDAO {
-    Subject save(Subject subject);
+@Repository
+public class SubjectDAOImpl implements SubjectDAO {
+    @Autowired
+    SubjectRepository subjectRepo;
 
-    List<Subject> findAll();
-
-    Optional<Subject> findById(int id);
-
-    void deleteById(int id);
+    public Subject save(Subject subject) { return subjectRepo.save(subject); }
+    public List<Subject> findAll() { return subjectRepo.findAll(); }
+    public Optional<Subject> findById(int id) { return subjectRepo.findById(id); }
+    public void deleteById(int id) { subjectRepo.deleteById(id); }
 }
