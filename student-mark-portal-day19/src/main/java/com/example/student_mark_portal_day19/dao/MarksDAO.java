@@ -1,17 +1,35 @@
 package com.example.student_mark_portal_day19.dao;
 
 
-
 import com.example.student_mark_portal_day19.model.Marks;
+import com.example.student_mark_portal_day19.repository.MarksRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface MarksDAO {
-    Marks save(Marks marks);
+@Repository
+public class MarksDAO {
 
-    Optional<Marks> findById(int id);
+    @Autowired
+    private MarksRepository marksRepo;
 
-    void deleteById(int id);
 
-    boolean existsById(int id);
+    public Marks save(Marks marks) {
+        return marksRepo.save(marks);
+    }
+
+
+    public Optional<Marks> findById(int id) {
+        return marksRepo.findById(id);
+    }
+
+    public void deleteById(int id) {
+        marksRepo.deleteById(id);
+    }
+
+
+    public boolean existsById(int id) {
+        return marksRepo.existsById(id);
+    }
 }
