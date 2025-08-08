@@ -57,36 +57,25 @@ public class OrderServiceImpl implements OrderService {
                 throw new RuntimeException("Product " + product.getName() + " is out of stock");
             }
 
-            // Deduct product quantity
             product.setQuantity(product.getQuantity() - cartItem.getQuantity());
             productRepository.save(product);
-
-            // Create order item
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(product.getPrice() * cartItem.getQuantity());
             orderItems.add(orderItem);
-
-            // Convert cart item to DTO using mapper
             CartItemDTO cartItemDTO = cartItemMapper.toDto(cartItem);
             cartItemDTOList.add(cartItemDTO);
         }
-
         order.setOrderItems(orderItems);
         Order savedOrder = orderRepository.save(order);
-
-        // Clear cart
         cartItemRepository.deleteAll(cartItems);
-
-        // Build response
         OrderResponseDTO response = new OrderResponseDTO();
         response.setOrderId(savedOrder.getId());
         response.setAddress(savedOrder.getAddress());
         response.setOrderDate(savedOrder.getOrderDate());
         response.setItems(cartItemDTOList);
-
         return response;
     }
 
@@ -119,7 +108,6 @@ public class OrderServiceImpl implements OrderService {
 
                 itemDTOs.add(cartItemDTO);
             }
-
             responseDTO.setItems(itemDTOs);
             orderHistory.add(responseDTO);
         }

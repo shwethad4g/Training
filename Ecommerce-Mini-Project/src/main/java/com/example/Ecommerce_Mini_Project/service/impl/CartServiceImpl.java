@@ -40,17 +40,13 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(cartItemDTO.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-
         if (product.getQuantity() < cartItemDTO.getQuantity()) {
             throw new RuntimeException("Not enough product quantity available");
         }
 
-
         CartItem cartItem = cartItemMapper.toEntity(cartItemDTO);
         cartItem.setUser(user);
         cartItem.setProduct(product);
-
-
         cartItemRepository.save(cartItem);
 
         return "Product added to cart successfully!";
