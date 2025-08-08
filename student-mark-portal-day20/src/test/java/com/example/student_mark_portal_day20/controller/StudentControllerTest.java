@@ -36,6 +36,7 @@ class StudentControllerTest {
         dto.setName("John");
         dto.setEmail("john@college.com");
         dto.setDob(LocalDate.of(2000, 1, 1));
+
         return dto;
     }
 
@@ -45,6 +46,7 @@ class StudentControllerTest {
         student.setName("John");
         student.setEmail("john@college.com");
         student.setDob(LocalDate.of(2000, 1, 1));
+
         return student;
     }
 
@@ -52,12 +54,9 @@ class StudentControllerTest {
     void testCreate() {
         StudentDTO dto = getSampleDTO();
         Student student = getSampleModel();
-
         when(service.createStudent(dto)).thenReturn(student);
         when(studentMapper.toDTO(student)).thenReturn(dto);
-
         StudentDTO result = controller.create(dto);
-
         assertNotNull(result);
         assertEquals("John", result.getName());
         verify(service).createStudent(dto);
@@ -68,41 +67,33 @@ class StudentControllerTest {
     void testGetAll() {
         List<StudentDTO> list = new ArrayList<>();
         list.add(getSampleDTO());
-
         when(service.getAllStudents()).thenReturn(list);
-
         List<StudentDTO> result = controller.getAll();
-
         assertEquals(1, result.size());
         assertEquals("John", result.get(0).getName());
         verify(service).getAllStudents();
     }
 
     @Test
-    void testGetById() {
+    void testGetById_thenReturnStudent() {
         StudentDTO dto = getSampleDTO();
         when(service.getStudentById(1)).thenReturn(dto);
-
         StudentDTO result = controller.getById(1);
-
         assertEquals("John", result.getName());
         verify(service).getStudentById(1);
     }
 
     @Test
-    void testDelete() {
+    void testDeleteStudent_whenIdIsPresent_thenReturnSuccessMessage() {
         controller.delete(1);
-
         verify(service).deleteStudent(1);
     }
 
     @Test
-    void testUpdateStudent() {
+    void testUpdateStudent_whenIdIsPresent_thenReturnUpdatedStudent() {
         StudentDTO dto = getSampleDTO();
         when(service.updateStudent(eq(1), any(StudentDTO.class))).thenReturn(dto);
-
         StudentDTO result = controller.updateStudent(1, dto);
-
         assertEquals("John", result.getName());
         verify(service).updateStudent(1, dto);
     }

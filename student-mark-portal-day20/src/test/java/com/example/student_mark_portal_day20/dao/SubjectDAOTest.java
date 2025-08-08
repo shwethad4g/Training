@@ -1,6 +1,6 @@
 package com.example.student_mark_portal_day20.dao;
 
-import com.example.student_mark_portal_day20.dao.SubjectDAO;
+
 import com.example.student_mark_portal_day20.model.Subject;
 import com.example.student_mark_portal_day20.repository.SubjectRepository;
 import org.junit.jupiter.api.BeforeEach;

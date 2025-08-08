@@ -1,15 +1,14 @@
 package com.example.student_mark_portal_day20.service;
 
 import com.example.student_mark_portal_day20.dao.StudentDAO;
+import com.example.student_mark_portal_day20.data_factory.StudentTestDataFactory;
 import com.example.student_mark_portal_day20.dto.StudentDTO;
 import com.example.student_mark_portal_day20.mapper.StudentMapper;
 import com.example.student_mark_portal_day20.model.Student;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.time.LocalDate;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,18 +28,11 @@ class StudentServiceImplTest {
     private Student student;
     private StudentDTO studentDTO;
 
-    @BeforeEach
-    void setUp() {
-        student = new Student();
-        student.setStudentId(1);
-        student.setName("John");
-        student.setEmail("john@college.com");
-        student.setDob(LocalDate.of(2000, 1, 1));
-        studentDTO = new StudentDTO();
-        studentDTO.setStudentId(1);
-        studentDTO.setName("John");
-        studentDTO.setEmail("john@college.com");
-        studentDTO.setDob(LocalDate.of(2000, 1, 1));
+
+    void setup(){
+        student = StudentTestDataFactory.createAnotherStudent();
+        studentDTO = StudentTestDataFactory.createAnotherStudentDTO();
+
     }
 
     @Test

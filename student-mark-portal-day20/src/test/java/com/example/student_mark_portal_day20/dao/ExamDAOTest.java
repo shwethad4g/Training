@@ -1,6 +1,6 @@
 package com.example.student_mark_portal_day20.dao;
 
-import com.example.student_mark_portal_day20.dao.ExamDAO;
+import com.example.student_mark_portal_day20.data_factory.ExamTestDataFactory;
 import com.example.student_mark_portal_day20.model.Exam;
 import com.example.student_mark_portal_day20.repository.ExamRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,14 +29,11 @@ class ExamDAOTest {
 
     @BeforeEach
     void setUp() {
-        sampleExam = new Exam();
-        sampleExam.setExamId(1);
-        sampleExam.setName("Midterm");
-        sampleExam.setDate(LocalDate.of(2025, 8, 1));
+        sampleExam = ExamTestDataFactory.createDefaultExam();
     }
 
     @Test
-    void testSave() {
+    void testSave_whenExamIsValid_thenReturnSavedExam() {
         when(examRepo.save(sampleExam)).thenReturn(sampleExam);
         Exam saved = examDAO.save(sampleExam);
         assertNotNull(saved);
@@ -47,16 +42,11 @@ class ExamDAOTest {
     }
 
     @Test
-    void testFindAll() {
-        Exam e1 = new Exam();
-        e1.setExamId(1);
-        e1.setName("Unit Test");
-        Exam e2 = new Exam();
-        e2.setExamId(2);
-        e2.setName("Final Exam");
-        List<Exam> examList = new ArrayList<>();
-        examList.add(e1);
-        examList.add(e2);
+    void testFindAll_whenExamsExist_thenReturnExamList() {
+        List<Exam> examList = List.of(
+                ExamTestDataFactory.createUnitTestExam(),
+                ExamTestDataFactory.createFinalExam()
+        );
         when(examRepo.findAll()).thenReturn(examList);
         List<Exam> result = examDAO.findAll();
         assertEquals(2, result.size());
@@ -66,7 +56,7 @@ class ExamDAOTest {
     }
 
     @Test
-    void testFindById_Found() {
+    void testFindById_whenIdIsPresent_thenReturnExam() {
         when(examRepo.findById(1)).thenReturn(Optional.of(sampleExam));
         Optional<Exam> result = examDAO.findById(1);
         assertTrue(result.isPresent());
@@ -75,7 +65,7 @@ class ExamDAOTest {
     }
 
     @Test
-    void testFindById_NotFound() {
+    void testFindById_whenIdIsNotPresent_thenReturnEmptyOptional() {
         when(examRepo.findById(2)).thenReturn(Optional.empty());
         Optional<Exam> result = examDAO.findById(2);
         assertFalse(result.isPresent());
@@ -83,7 +73,7 @@ class ExamDAOTest {
     }
 
     @Test
-    void testDeleteById() {
+    void testDeleteById_whenIdIsGiven_thenDeleteExam() {
         examDAO.deleteById(1);
         verify(examRepo).deleteById(1);
     }

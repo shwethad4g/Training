@@ -1,6 +1,7 @@
 package com.example.student_mark_portal_day20.service;
 
 import com.example.student_mark_portal_day20.dao.MarksDAO;
+import com.example.student_mark_portal_day20.data_factory.MarkTestDataFactory;
 import com.example.student_mark_portal_day20.dto.MarksDTO;
 import com.example.student_mark_portal_day20.mapper.MarksMapper;
 import com.example.student_mark_portal_day20.model.*;
@@ -16,15 +17,22 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class MarksServiceImplTest {
 
-    @Mock private MarksDAO marksDAO;
-    @Mock private MarksMapper marksMapper;
-    @Mock private ExamRepository examRepository;
-    @Mock private StudentRepository studentRepository;
-    @Mock private SubjectRepository subjectRepository;
-    @Mock private MarksRepository marksRepository;
+    @Mock
+    private MarksDAO marksDAO;
+    @Mock
+    private MarksMapper marksMapper;
+    @Mock
+    private ExamRepository examRepository;
+    @Mock
+    private StudentRepository studentRepository;
+    @Mock
+    private SubjectRepository subjectRepository;
+    @Mock
+    private MarksRepository marksRepository;
 
     @InjectMocks
     private MarksServiceImpl marksService;
@@ -37,21 +45,11 @@ class MarksServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        marksDTO = new MarksDTO();
-        marksDTO.setMarksId(1);
-        marksDTO.setScore(80);
-        marksDTO.setExamId(1);
-        marksDTO.setStudentId(1);
-        marksDTO.setSubjectId(1);
-        marks = new Marks();
-        marks.setMarksId(1);
-        marks.setScore(80);
-        exam = new Exam();
-        exam.setExamId(1);
-        student = new Student();
-        student.setStudentId(1);
-        subject = new Subject();
-        subject.setSubjectId(1);
+        marksDTO = MarkTestDataFactory.createMarksDTO();
+        marks = MarkTestDataFactory.createMarks();
+        exam = MarkTestDataFactory.createExam();
+        student = MarkTestDataFactory.createStudent();
+        subject = MarkTestDataFactory.createSubject();
     }
 
     @Test

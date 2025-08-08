@@ -1,5 +1,6 @@
 package com.example.student_mark_portal_day20.controller;
 
+
 import com.example.student_mark_portal_day20.dto.MarksDTO;
 import com.example.student_mark_portal_day20.service.MarksService;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,10 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MarksControllerTest {
@@ -36,7 +39,7 @@ class MarksControllerTest {
     }
 
     @Test
-    void testCreateMarks() {
+    void testCreateMarks_whenValidMarksDTO_thenReturnCreatedMarks() {
         when(marksService.createMarks(any(MarksDTO.class))).thenReturn(sampleDTO);
         MarksDTO result = marksController.createMarks(sampleDTO).getBody();
         assertEquals(90, result.getScore());
@@ -46,9 +49,8 @@ class MarksControllerTest {
         verify(marksService).createMarks(sampleDTO);
     }
 
-
     @Test
-    void testGetMarksById() {
+    void testGetMarksById_whenIdIsPresent_thenReturnMarks() {
         when(marksService.getMarksById(1)).thenReturn(sampleDTO);
         MarksDTO result = marksController.getById(1);
         assertNotNull(result);
@@ -58,16 +60,15 @@ class MarksControllerTest {
     }
 
     @Test
-    void testUpdateMarks() {
+    void testUpdateMarks_whenIdIsPresent_thenReturnUpdatedMarks() {
         when(marksService.updateMarks(eq(1), any(MarksDTO.class))).thenReturn(sampleDTO);
-
         MarksDTO result = marksController.update(1, sampleDTO);
         assertEquals(90, result.getScore());
         verify(marksService).updateMarks(1, sampleDTO);
     }
 
     @Test
-    void testDeleteMarks() {
+    void testDeleteMarks_whenIdIsPresent_thenDeleteSuccessfully() {
         marksController.delete(1);
         verify(marksService).deleteMarks(1);
     }
