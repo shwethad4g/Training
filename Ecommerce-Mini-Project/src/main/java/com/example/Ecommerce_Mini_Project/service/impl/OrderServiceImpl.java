@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
 
             List<CartItemDTO> itemDTOs = new ArrayList<>();
             for (OrderItem item : order.getOrderItems()) {
-                // Manually building CartItemDTO from OrderItem since we don’t have an OrderItemMapper
+
                 CartItemDTO cartItemDTO = new CartItemDTO();
                 cartItemDTO.setId(item.getId());
                 cartItemDTO.setProductId(item.getProduct().getId());
@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
                 cartItemDTO.setProductPrice(item.getProduct().getPrice());
                 cartItemDTO.setQuantity(item.getQuantity());
                 cartItemDTO.setTotalPrice(item.getPrice());
-                cartItemDTO.setUserId(userId); // Set userId manually
+                cartItemDTO.setUserId(userId);
 
                 itemDTOs.add(cartItemDTO);
             }
