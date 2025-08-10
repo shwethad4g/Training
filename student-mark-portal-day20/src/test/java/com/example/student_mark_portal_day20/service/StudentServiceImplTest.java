@@ -5,14 +5,20 @@ import com.example.student_mark_portal_day20.data_factory.StudentTestDataFactory
 import com.example.student_mark_portal_day20.dto.StudentDTO;
 import com.example.student_mark_portal_day20.mapper.StudentMapper;
 import com.example.student_mark_portal_day20.model.Student;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceImplTest {
@@ -25,78 +31,87 @@ class StudentServiceImplTest {
 
     @InjectMocks
     private StudentServiceImpl studentService;
+
     private Student student;
     private StudentDTO studentDTO;
 
-
-    void setup(){
+    @BeforeEach
+    void setup() {
         student = StudentTestDataFactory.createAnotherStudent();
         studentDTO = StudentTestDataFactory.createAnotherStudentDTO();
-
     }
 
     @Test
-    void testCreateStudent() {
+    void createStudent_whenValidData_thenReturnStudent() {
         when(studentDAO.save(any(Student.class))).thenReturn(student);
         Student result = studentService.createStudent(studentDTO);
         assertNotNull(result);
-        assertEquals("John", result.getName());
-        verify(studentDAO, times(1)).save(any(Student.class));
+        assertEquals("Charlie", result.getName()); // matches factory data
+        verify(studentDAO).save(any(Student.class));
     }
 
     @Test
-    void testGetAllStudents() {
-        List<Student> students = List.of(student);
-        List<StudentDTO> studentDTOs = List.of(studentDTO);
-        when(studentDAO.findAll()).thenReturn(students);
+    void getAllStudents_whenStudentsExist_thenReturnStudentList() {
+        when(studentDAO.findAll()).thenReturn(List.of(student));
         when(studentMapper.toDTO(any(Student.class))).thenReturn(studentDTO);
+
         List<StudentDTO> result = studentService.getAllStudents();
+
         assertEquals(1, result.size());
-        assertEquals("John", result.get(0).getName());
-        verify(studentDAO, times(1)).findAll();
+        assertEquals("John", result.get(0).getName()); // matches DTO name
+        verify(studentDAO).findAll();
     }
 
     @Test
-    void testGetStudentById() {
+    void getStudentById_whenIdExists_thenReturnStudent() {
         when(studentDAO.findById(1)).thenReturn(Optional.of(student));
         when(studentMapper.toDTO(student)).thenReturn(studentDTO);
+
         StudentDTO result = studentService.getStudentById(1);
+
         assertEquals("John", result.getName());
-        verify(studentDAO, times(1)).findById(1);
-        verify(studentMapper, times(1)).toDTO(student);
+        verify(studentDAO).findById(1);
+        verify(studentMapper).toDTO(student);
     }
 
     @Test
-    void testGetStudentById_NotFound() {
+    void getStudentById_whenIdDoesNotExist_thenThrowNoSuchElementException() {
         when(studentDAO.findById(99)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> studentService.getStudentById(99));
-        verify(studentDAO, times(1)).findById(99);
+
+        assertThrows(NoSuchElementException.class,
+                () -> studentService.getStudentById(99));
+
+        verify(studentDAO).findById(99);
     }
 
     @Test
-    void testDeleteStudent() {
+    void deleteStudent_whenIdExists_thenDeleteSuccessfully() {
         studentService.deleteStudent(1);
-        verify(studentDAO, times(1)).deleteById(1);
+        verify(studentDAO).deleteById(1);
     }
 
     @Test
-    void testUpdateStudent() {
+    void updateStudent_whenIdExists_thenReturnUpdatedStudent() {
         when(studentDAO.findById(1)).thenReturn(Optional.of(student));
         when(studentDAO.save(any(Student.class))).thenReturn(student);
         when(studentMapper.toDTO(any(Student.class))).thenReturn(studentDTO);
+
         StudentDTO result = studentService.updateStudent(1, studentDTO);
+
         assertNotNull(result);
         assertEquals("John", result.getName());
-        verify(studentDAO, times(1)).findById(1);
-        verify(studentDAO, times(1)).save(any(Student.class));
+        verify(studentDAO).findById(1);
+        verify(studentDAO).save(any(Student.class));
     }
 
     @Test
-    void testUpdateStudent_NotFound() {
+    void updateStudent_whenIdDoesNotExist_thenThrowRuntimeException() {
         when(studentDAO.findById(99)).thenReturn(Optional.empty());
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                studentService.updateStudent(99, studentDTO));
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> studentService.updateStudent(99, studentDTO));
+
         assertTrue(exception.getMessage().contains("Student not found with id: 99"));
-        verify(studentDAO, times(1)).findById(99);
+        verify(studentDAO).findById(99);
     }
 }

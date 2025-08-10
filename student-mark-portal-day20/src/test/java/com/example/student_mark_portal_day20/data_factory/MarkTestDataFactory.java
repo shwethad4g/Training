@@ -38,7 +38,7 @@ public class MarkTestDataFactory {
         public static MarksDTO createMarksDTO() {
             MarksDTO dto = new MarksDTO();
             dto.setMarksId(1);
-            dto.setScore(80);
+            dto.setScore(90);
             dto.setExamId(1);
             dto.setStudentId(1);
             dto.setSubjectId(1);

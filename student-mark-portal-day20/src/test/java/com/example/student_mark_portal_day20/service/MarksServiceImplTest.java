@@ -53,7 +53,7 @@ class MarksServiceImplTest {
     }
 
     @Test
-    void testCreateMarks_Success() {
+    void createMarks_whenValidData_thenReturnCreatedMarks()  {
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(subjectRepository.findById(1)).thenReturn(Optional.of(subject));
@@ -61,25 +61,25 @@ class MarksServiceImplTest {
         when(marksMapper.toDTO(any())).thenReturn(marksDTO);
         MarksDTO result = marksService.createMarks(marksDTO);
         assertNotNull(result);
-        assertEquals(80, result.getScore());
+        assertEquals(90, result.getScore());
         verify(marksRepository).save(any());
     }
 
     @Test
-    void testCreateMarks_ExamNotFound() {
+    void createMarks_whenExamNotFound_thenThrowEntityNotFoundException()  {
         when(examRepository.findById(1)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> marksService.createMarks(marksDTO));
     }
 
     @Test
-    void testCreateMarks_StudentNotFound() {
+    void createMarks_whenStudentNotFound_thenThrowEntityNotFoundException()  {
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> marksService.createMarks(marksDTO));
     }
 
     @Test
-    void testCreateMarks_SubjectNotFound() {
+    void createMarks_whenSubjectNotFound_thenThrowEntityNotFoundException() {
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(subjectRepository.findById(1)).thenReturn(Optional.empty());
@@ -87,21 +87,21 @@ class MarksServiceImplTest {
     }
 
     @Test
-    void testGetMarksById_Found() {
+    void getMarksById_whenIdIsPresent_thenReturnMarks(){
         when(marksDAO.findById(1)).thenReturn(Optional.of(marks));
         when(marksMapper.toDTO(marks)).thenReturn(marksDTO);
         MarksDTO result = marksService.getMarksById(1);
-        assertEquals(80, result.getScore());
+        assertEquals(90, result.getScore());
     }
 
     @Test
-    void testGetMarksById_NotFound() {
+    void getMarksById_whenIdIsNotPresent_thenThrowRuntimeException() {
         when(marksDAO.findById(1)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> marksService.getMarksById(1));
     }
 
     @Test
-    void testUpdateMarks_Success() {
+    void updateMarks_whenValidData_thenReturnUpdatedMarks() {
         when(marksDAO.existsById(1)).thenReturn(true);
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
@@ -110,25 +110,25 @@ class MarksServiceImplTest {
         when(marksMapper.toDTO(any())).thenReturn(marksDTO);
         MarksDTO result = marksService.updateMarks(1, marksDTO);
         assertNotNull(result);
-        assertEquals(80, result.getScore());
+        assertEquals(90, result.getScore());
         verify(marksRepository).save(any());
     }
 
     @Test
-    void testUpdateMarks_NotFound() {
+    void updateMarks_whenIdIsNotPresent_thenThrowRuntimeException() {
         when(marksDAO.existsById(1)).thenReturn(false);
         assertThrows(RuntimeException.class, () -> marksService.updateMarks(1, marksDTO));
     }
 
     @Test
-    void testUpdateMarks_ExamNotFound() {
+    void updateMarks_whenExamNotFound_thenThrowRuntimeException() {
         when(marksDAO.existsById(1)).thenReturn(true);
         when(examRepository.findById(1)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> marksService.updateMarks(1, marksDTO));
     }
 
     @Test
-    void testUpdateMarks_StudentNotFound() {
+    void updateMarks_whenStudentNotFound_thenThrowRuntimeException(){
         when(marksDAO.existsById(1)).thenReturn(true);
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.empty());
@@ -136,7 +136,7 @@ class MarksServiceImplTest {
     }
 
     @Test
-    void testUpdateMarks_SubjectNotFound() {
+    void updateMarks_whenSubjectNotFound_thenThrowRuntimeException(){
         when(marksDAO.existsById(1)).thenReturn(true);
         when(examRepository.findById(1)).thenReturn(Optional.of(exam));
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
@@ -145,7 +145,7 @@ class MarksServiceImplTest {
     }
 
     @Test
-    void testDeleteMarks_Success() {
+    void deleteMarks_whenIdIsPresent_thenDeleteSuccessfully(){
         when(marksDAO.existsById(1)).thenReturn(true);
         assertDoesNotThrow(() -> marksService.deleteMarks(1));
         verify(marksDAO).deleteById(1);
@@ -153,7 +153,7 @@ class MarksServiceImplTest {
 
 
     @Test
-    void testDeleteMarks_NotFound() {
+    void deleteMarks_whenIdIsNotPresent_thenThrowRuntimeException(){
         when(marksDAO.existsById(1)).thenReturn(false);
         assertThrows(RuntimeException.class, () -> marksService.deleteMarks(1));
     }

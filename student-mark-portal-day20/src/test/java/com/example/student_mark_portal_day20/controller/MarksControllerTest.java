@@ -1,6 +1,7 @@
 package com.example.student_mark_portal_day20.controller;
 
 
+import com.example.student_mark_portal_day20.data_factory.MarkTestDataFactory;
 import com.example.student_mark_portal_day20.dto.MarksDTO;
 import com.example.student_mark_portal_day20.service.MarksService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,22 +31,18 @@ class MarksControllerTest {
 
     @BeforeEach
     void setUp() {
-        sampleDTO = new MarksDTO();
-        sampleDTO.setMarksId(1);
-        sampleDTO.setScore(90);
-        sampleDTO.setExamId(100);
-        sampleDTO.setStudentId(200);
-        sampleDTO.setSubjectId(300);
+        sampleDTO = MarkTestDataFactory.createMarksDTO();
     }
+
 
     @Test
     void testCreateMarks_whenValidMarksDTO_thenReturnCreatedMarks() {
         when(marksService.createMarks(any(MarksDTO.class))).thenReturn(sampleDTO);
         MarksDTO result = marksController.createMarks(sampleDTO).getBody();
         assertEquals(90, result.getScore());
-        assertEquals(100, result.getExamId());
-        assertEquals(200, result.getStudentId());
-        assertEquals(300, result.getSubjectId());
+        assertEquals(1, result.getExamId());
+        assertEquals(1, result.getStudentId());
+        assertEquals(1, result.getSubjectId());
         verify(marksService).createMarks(sampleDTO);
     }
 
