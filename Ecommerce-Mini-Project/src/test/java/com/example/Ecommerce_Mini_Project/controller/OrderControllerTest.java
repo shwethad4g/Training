@@ -10,11 +10,11 @@ import com.example.Ecommerce_Mini_Project.repository.OrderItemRepository;
 import com.example.Ecommerce_Mini_Project.service.OrderPdfService;
 import com.example.Ecommerce_Mini_Project.service.OrderService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class OrderControllerTest {
 
     @InjectMocks
@@ -36,11 +37,6 @@ class OrderControllerTest {
 
     @Mock
     private OrderPdfService orderPDFService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void placeOrder_withValidRequest_returnsOrderResponse() {

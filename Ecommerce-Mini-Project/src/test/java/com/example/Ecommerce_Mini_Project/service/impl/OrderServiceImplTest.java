@@ -10,9 +10,10 @@ import com.example.Ecommerce_Mini_Project.model.*;
 import com.example.Ecommerce_Mini_Project.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
 
     @InjectMocks
@@ -46,7 +48,6 @@ class OrderServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         testUser = OrderServiceTestDataFactory.createUser(1L);
         testProduct = OrderServiceTestDataFactory.createProduct(101L, "Test Product", 10, 100.0);
         testCartItem = OrderServiceTestDataFactory.createCartItem(testUser, testProduct, 2);
@@ -58,7 +59,8 @@ class OrderServiceImplTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(cartItemRepository.findByUser(testUser)).thenReturn(List.of(testCartItem));
-        when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(productRepository.save(any(Product.class))).thenAnswer(invocation ->
+                invocation.getArgument(0));
         when(cartItemMapper.toDto(testCartItem)).thenReturn(new CartItemDTO());
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
             Order o = invocation.getArgument(0);
@@ -99,7 +101,7 @@ class OrderServiceImplTest {
 
     @Test
     void placeOrder_withOutOfStockProduct_throwsException() {
-        testProduct.setQuantity(1); // less than cart quantity
+        testProduct.setQuantity(1);
         OrderRequestDTO request = OrderServiceTestDataFactory.createOrderRequestDTO(1L, "Address");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
